@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brazil CLT Paycheck Calculator | Finance Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="clt-paycheck.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="brand">
+                <i class="ph ph-wallet"></i>
+                <h1>Finance<br>Tracker</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="ph ph-squares-four"></i> Dashboard</a></li>
+                <li><a href="index.html#transactions"><i class="ph ph-list-dashes"></i> Transactions</a></li>
+                <li><a href="index.html#budget"><i class="ph ph-chart-line-up"></i> Budgeting plan</a></li>
+                <li class="active"><a href="clt-paycheck.html"><i class="ph ph-calculator"></i> CLT Paycheck</a></li>
+            </ul>
+            <div class="user-profile">
+                <div class="avatar">U</div>
+                <div>
+                    <span class="name">User Profile</span>
+                    <span class="role">HR Manager</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main CLT Paycheck Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="greeting">
+                    <h2>Brazil CLT Paycheck Calculator</h2>
+                    <p>Calculate employee salaries, taxes, and contributions according to Brazilian labor laws</p>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-primary" id="btn-new-scenario">
+                        <i class="ph ph-plus"></i> New Scenario
+                    </button>
+                    <button class="btn btn-secondary" id="btn-export-report">
+                        <i class="ph ph-file-pdf"></i> Export Report
+                    </button>
+                </div>
+            </header>
+
+            <!-- CLT Calculator Grid -->
+            <div class="clt-grid">
+                <!-- Left Panel: Input Configuration -->
+                <div class="clt-input-panel glass-panel">
+                    <div class="panel-header">
+                        <h3><i class="ph ph-sliders"></i> Salary Configuration</h3>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="employee-name">Employee Name</label>
+                            <input type="text" id="employee-name" placeholder="Enter employee name">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gross-salary">Gross Salary (R$)</label>
+                                <input type="text" id="gross-salary" class="currency-input" placeholder="0,00" value="5.000,00">
+                            </div>
+                            <div class="form-group">
+                                <label for="work-hours">Monthly Hours</label>
+                                <input type="number" id="work-hours" value="220">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dependents">Number of Dependents</label>
+                            <input type="number" id="dependents" value="0" min="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="other-deductions">Other Deductions (R$)</label>
+                            <input type="text" id="other-deductions" class="currency-input" placeholder="0,00">
+                        </div>
+                    </div>
+                    
+                    <div class="panel-header">
+                        <h3><i class="ph ph-gear"></i> Tax Configuration</h3>
+                        <button class="btn btn-text" id="btn-edit-taxes">Edit</button>
+                    </div>
+                    
+                    <div class="tax-config-section">
+                        <div class="tax-toggle">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="toggle-inss" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">INSS Contribution</span>
+                            </label>
+                            <span class="tax-value" id="inss-value">R$ 440,00</span>
+                        </div>
+                        
+                        <div class="tax-toggle">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="toggle-irrf" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">IRRF (Income Tax)</span>
+                            </label>
+                            <span class="tax-value" id="irrf-value">R$ 505,64</span>
+                        </div>
+                        
+                        <div class="tax-toggle">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="toggle-fgts" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">FGTS Deposit</span>
+                            </label>
+                            <span class="tax-value" id="fgts-value">R$ 400,00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-header">
+                        <h3><i class="ph ph-plus-circle"></i> Benefits & Allowances</h3>
+                        <button class="btn btn-text" id="btn-add-benefit">Add</button>
+                    </div>
+                    
+                    <div class="benefits-section" id="benefits-list">
+                        <!-- Benefits will be added here dynamically -->
+                        <div class="benefit-item">
+                            <div class="benefit-info">
+                                <span class="benefit-name">Transportation Allowance</span>
+                                <span class="benefit-amount">R$ 300,00</span>
+                            </div>
+                            <button class="btn-icon delete-benefit"><i class="ph ph-trash"></i></button>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-info">
+                                <span class="benefit-name">Meal Ticket</span>
+                                <span class="benefit-amount">R$ 600,00</span>
+                            </div>
+                            <button class="btn-icon delete-benefit"><i class="ph ph-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Panel: Results & Breakdown -->
+                <div class="clt-results-panel glass-panel">
+                    <div class="panel-header">
+                        <h3><i class="ph ph-calculator"></i> Paycheck Breakdown</h3>
+                        <div class="scenario-info">
+                            <span class="scenario-name">Current Scenario</span>
+                            <span class="scenario-date">Updated just now</span>
+                        </div>
+                    </div>
+                    
+                    <div class="results-summary">
+                        <div class="result-item gross">
+                            <span class="result-label">Gross Salary</span>
+                            <span class="result-value" id="result-gross">R$ 5.000,00</span>
+                        </div>
+                        
+                        <div class="result-item deductions">
+                            <span class="result-label">Total Deductions</span>
+                            <span class="result-value" id="result-deductions">R$ 945,64</span>
+                        </div>
+                        
+                        <div class="result-divider">
+                            <div class="divider-line"></div>
+                        </div>
+                        
+                        <div class="result-item net">
+                            <span class="result-label">Net Salary</span>
+                            <span class="result-value" id="result-net">R$ 4.054,36</span>
+                        </div>
+                        
+                        <div class="result-item employer-cost">
+                            <span class="result-label">Total Employer Cost</span>
+                            <span class="result-value" id="result-employer-cost">R$ 5.400,00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="breakdown-section">
+                        <h4>Detailed Breakdown</h4>
+                        <div class="breakdown-list">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">INSS Contribution</span>
+                                <span class="breakdown-value">R$ 440,00</span>
+                                <span class="breakdown-percentage">8.8%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">IRRF (Income Tax)</span>
+                                <span class="breakdown-value">R$ 505,64</span>
+                                <span class="breakdown-percentage">10.1%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">FGTS Deposit</span>
+                                <span class="breakdown-value">R$ 400,00</span>
+                                <span class="breakdown-percentage">8.0%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Transportation Allowance</span>
+                                <span class="breakdown-value">R$ 300,00</span>
+                                <span class="breakdown-percentage">6.0%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Meal Ticket</span>
+                                <span class="breakdown-value">R$ 600,00</span>
+                                <span class="breakdown-percentage">12.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary full-width" id="btn-save-scenario">
+                            <i class="ph ph-floppy-disk"></i> Save Scenario
+                        </button>
+                        <button class="btn btn-secondary full-width" id="btn-compare-scenarios">
+                            <i class="ph ph-scales"></i> Compare Scenarios
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tax Configuration Modal -->
+            <div class="modal hidden" id="tax-config-modal">
+                <div class="modal-content glass-panel">
+                    <div class="modal-header">
+                        <h3>Tax Configuration</h3>
+                        <button class="btn-close" id="btn-close-tax-modal"><i class="ph ph-x"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tax-config-tabs">
+                            <button class="tax-tab active" data-tab="inss">INSS</button>
+                            <button class="tax-tab" data-tab="irrf">IRRF</button>
+                            <button class="tax-tab" data-tab="fgts">FGTS</button>
+                        </div>
+                        
+                        <div class="tax-config-content" id="inss-config">
+                            <h4>INSS Contribution Rates</h4>
+                            <div class="tax-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Salary Range</th>
+                                            <th>Rate</th>
+                                            <th>Deduction</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inss-table-body">
+                                        <!-- INSS table rows will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="tax-config-content hidden" id="irrf-config">
+                            <h4>IRRF (Income Tax) Rates</h4>
+                            <div class="tax-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Salary Range</th>
+                                            <th>Rate</th>
+                                            <th>Deduction</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="irrf-table-body">
+                                        <!-- IRRF table rows will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <label for="irrf-dependents-deduction">Deduction per Dependent (R$)</label>
+                                <input type="text" id="irrf-dependents-deduction" class="currency-input" value="189,59">
+                            </div>
+                        </div>
+                        
+                        <div class="tax-config-content hidden" id="fgts-config">
+                            <h4>FGTS Configuration</h4>
+                            <div class="form-group">
+                                <label for="fgts-rate">FGTS Rate (%)</label>
+                                <input type="number" id="fgts-rate" value="8" step="0.1" min="0" max="20">
+                            </div>
+                            <div class="form-group">
+                                <label for="fgts-deposit-day">Deposit Day of Month</label>
+                                <input type="number" id="fgts-deposit-day" value="7" min="1" max="31">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="btn-save-tax-config">Save Configuration</button>
+                        <button class="btn btn-text" id="btn-reset-tax-config">Reset to Default</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add Benefit Modal -->
+            <div class="modal hidden" id="benefit-modal">
+                <div class="modal-content glass-panel">
+                    <div class="modal-header">
+                        <h3>Add Benefit/Allowance</h3>
+                        <button class="btn-close" id="btn-close-benefit-modal"><i class="ph ph-x"></i></button>
+                    </div>
+                    <form id="benefit-form">
+                        <div class="form-group">
+                            <label for="benefit-name">Benefit Name</label>
+                            <input type="text" id="benefit-name" placeholder="e.g., Transportation, Meal Ticket, Health Insurance">
+                        </div>
+                        <div class="form-group">
+                            <label for="benefit-amount">Amount (R$)</label>
+                            <input type="text" id="benefit-amount" class="currency-input" placeholder="0,00">
+                        </div>
+                        <div class="form-group">
+                            <label for="benefit-type">Type</label>
+                            <select id="benefit-type">
+                                <option value="allowance">Allowance (Taxable)</option>
+                                <option value="non-taxable">Non-Taxable Benefit</option>
+                                <option value="deduction">Deduction</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary full-width">Add Benefit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="clt-paycheck.js"></script>
+</body>
+</html>
