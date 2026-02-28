@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker | Tatu OS</title>
+    <!-- Google Fonts: Outfit for a modern, geometric feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for premium, consistent iconography -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="brand">
+                <i class="ph ph-wallet"></i>
+                <h1>Finance<br>Tracker</h1>
+            </div>
+            <ul class="nav-links">
+                <li class="active" id="nav-dashboard"><a href="#"><i class="ph ph-squares-four"></i> Dashboard</a></li>
+                <li id="nav-transactions"><a href="#"><i class="ph ph-list-dashes"></i> Transactions</a></li>
+                <li id="nav-budget"><a href="#"><i class="ph ph-chart-line-up"></i> Budgeting plan</a></li>
+            </ul>
+            <div class="user-profile">
+                <div class="avatar">U</div>
+                <div>
+                    <span class="name">User Profile</span>
+                    <span class="role">CEO</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard View -->
+        <main class="main-content" id="view-dashboard">
+            <header class="top-bar">
+                <div class="greeting">
+                    <h2>Overview</h2>
+                    <p>Track your wealth trajectory.</p>
+                </div>
+                <div class="actions" style="display: flex; gap: 16px; align-items: center;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="month" id="filter-month" title="Filter by Competence Month" style="padding: 10px;">
+                    </div>
+                    <button class="btn btn-primary" id="btn-add-transaction">
+                        <i class="ph ph-plus"></i> New Transaction
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Widgets -->
+            <section class="dashboard-grid">
+                <div class="widget glass-panel balance-widget">
+                    <div class="widget-header">
+                        <h3>Total Balance</h3>
+                        <i class="ph ph-wallet"></i>
+                    </div>
+                    <div class="amount" id="display-balance">R$ 0,00</div>
+                    <div class="trend positive">
+                        <i class="ph ph-trend-up"></i> +0% this month
+                    </div>
+                </div>
+
+                <div class="widget glass-panel income-widget">
+                    <div class="widget-header">
+                        <h3>Income</h3>
+                        <i class="ph ph-arrow-down-left"></i>
+                    </div>
+                    <div class="amount" id="display-income">R$ 0,00</div>
+                </div>
+
+                <div class="widget glass-panel expense-widget">
+                    <div class="widget-header">
+                        <h3>Expenses</h3>
+                        <i class="ph ph-arrow-up-right"></i>
+                    </div>
+                    <div class="amount" id="display-expense">R$ 0,00</div>
+                </div>
+
+                <div class="widget glass-panel budget-widget">
+                    <div class="widget-header">
+                        <h3>Budget vs Actual</h3>
+                        <i class="ph ph-chart-pie-slice"></i>
+                    </div>
+                    <div class="amount" id="display-budget-status">R$ 0,00</div>
+                    <div class="trend" id="display-budget-trend">
+                        Planned Budget Remaining
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section class="recent-transactions glass-panel">
+                <div class="section-header">
+                    <h3>Recent Transactions</h3>
+                    <button class="btn btn-text">View All</button>
+                </div>
+
+                <!-- Loading State overlay -->
+                <div class="loading-state hidden" id="transaction-loader">
+                    <i class="ph ph-spinner-gap spin"></i>
+                    <p>Syncing data...</p>
+                </div>
+
+                <div class="table-container">
+                    <table id="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Competence</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-list">
+                            <!-- Transactions rendered here via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Budgeting View -->
+        <main class="main-content hidden" id="view-budget">
+            <header class="top-bar">
+                <div class="greeting">
+                    <h2>Annual Budgeting Plan</h2>
+                    <p>Define your financial targets for the year.</p>
+                </div>
+                <div class="actions" style="display: flex; gap: 16px; align-items: center;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="number" id="budget-year-picker" class="year-picker" min="2020" max="2050"
+                            value="2026" style="padding: 10px; width: 100px;">
+                    </div>
+                </div>
+            </header>
+
+            <section class="budget-matrix-container glass-panel">
+                <div class="table-container spreadsheet-container">
+                    <table id="budget-table">
+                        <thead>
+                            <tr>
+                                <th class="sticky-col">Category Group</th>
+                                <th class="sticky-col-2">Category</th>
+                                <th>Jan</th>
+                                <th>Feb</th>
+                                <th>Mar</th>
+                                <th>Apr</th>
+                                <th>May</th>
+                                <th>Jun</th>
+                                <th>Jul</th>
+                                <th>Aug</th>
+                                <th>Sep</th>
+                                <th>Oct</th>
+                                <th>Nov</th>
+                                <th>Dec</th>
+                            </tr>
+                        </thead>
+                        <tbody id="budget-list">
+                            <!-- Budget matrix rendered here via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for New Transaction -->
+    <div class="modal hidden" id="transaction-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>New Transaction</h3>
+                <button class="btn-close" id="btn-close-modal"><i class="ph ph-x"></i></button>
+            </div>
+            <form id="transaction-form">
+                <div class="form-group type-toggle">
+                    <input type="radio" id="type-income" name="type" value="income" checked>
+                    <label for="type-income">Income</label>
+                    <input type="radio" id="type-expense" name="type" value="expense">
+                    <label for="type-expense">Expense</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="desc">Description</label>
+                    <input type="text" id="desc" required placeholder="e.g. Freelance Project">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Amount (R$)</label>
+                        <input type="text" id="amount" class="currency-input" inputmode="numeric" required
+                            placeholder="0,00">
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <!-- Categories rendered here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="competence">Competence Month</label>
+                        <input type="month" id="competence" required>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="exclude">
+                        <label for="exclude">Exclude from balance calculations</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary full-width">Save Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js?v=2"></script>
+</body>
+
+</html>
